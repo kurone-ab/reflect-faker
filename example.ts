@@ -23,7 +23,15 @@ type Fake = {
 		b: (string | number | boolean)[];
 	};
 };
+type Fake2 = {
+	fe: string;
+	ob: {
+		ab: string;
+		cd: (string | number)[];
+	};
+};
 
 export abstract class FakeAbstractClass {
 	public abstract fakeMethod(): Fake;
+	public abstract fakeMethod2(): Fake2;
 }
