@@ -2,7 +2,8 @@
 	"compilerOptions": {
 		"isolatedModules": true,
 		"esModuleInterop": true,
-		"module": "NodeNext",
+		"module": "CommonJS",
+		"strictNullChecks": true,
 		"moduleResolution": "Node",
 		"noImplicitAny": true,
 		"target": "ESNext",
@@ -12,5 +13,6 @@
 		"paths": {
 			"~/*": ["src/*"]
 		}
-	}
+	},
+	"exclude": ["node_modules", "dist", "example.ts"]
 }
