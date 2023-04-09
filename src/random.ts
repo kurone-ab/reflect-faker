@@ -44,8 +44,11 @@ export namespace Random {
 	};
 
 	export function gacha<T>(array: T[]): T;
-	export function gacha<T extends ts.Node>(array: ts.NodeArray<T>): T;
-	export function gacha<T extends ts.Node>(array: unknown[] | ts.NodeArray<T>): unknown | T {
-		return array[Random.number(0, array.length - 1)];
+	export function gacha<T>(array: T[], count: number): T[];
+	export function gacha<T>(array: T[], count: number = 1): T | T[] {
+		if (count === 1) return array[Random.number(0, array.length - 1)];
+		const result: T[] = [];
+		for (let i = 0; i < count; i++) result.push(Random.gacha(array));
+		return result;
 	}
 }

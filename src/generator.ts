@@ -57,7 +57,7 @@ export const createDataFromProperty = (property: ts.PropertySignature): { name: 
 	const name = property.name.text;
 	let type = property.type;
 	if (!type) throw new Error('Unknown type');
-	if (ts.isUnionTypeNode(type)) type = Random.gacha(type.types);
+	if (ts.isUnionTypeNode(type)) type = Random.gacha(Array.from(type.types));
 	let value: Value = null;
 	if (type.kind === ts.SyntaxKind.StringKeyword) {
 		value = Random.string(1);
