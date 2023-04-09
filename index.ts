@@ -14,6 +14,7 @@ sourceFile.statements.filter(ts.isTypeAliasDeclaration).forEach((node) => {
   });
 });
 
+const randomBoolean = () => Math.random() > 0.5;
 const randomString = (): string => Math.random().toString(36).substring(7);
 const randomNumber = () => Math.floor(Math.random() * 1000);
 const randomArray = (
@@ -37,6 +38,7 @@ const shuffle = <T>(array: T[]): T[] => {
 };
 
 type Value =
+  | boolean
   | string
   | number
   | (string | number)[]
@@ -46,7 +48,9 @@ const createDataFromProperty = (property: ts.PropertySignature) => {
   const name = property.name.getText(sourceFile);
   let value: Value = null;
   const type = property.type;
-  if (type.kind === ts.SyntaxKind.StringKeyword) {
+  if (type.kind === ts.SyntaxKind.BooleanKeyword) {
+    value = randomBoolean();
+  } else if (type.kind === ts.SyntaxKind.StringKeyword) {
     value = randomString();
   } else if (type.kind === ts.SyntaxKind.NumberKeyword) {
     value = randomNumber();
@@ -82,7 +86,7 @@ const createDataFromProperty = (property: ts.PropertySignature) => {
       return acc;
     }, {});
   } else {
-    console.log("Unknown type", type.kind);
+    console.log("Unknown type", type.kind, type.getText(sourceFile));
   }
   return { name, value };
 };
@@ -116,12 +120,17 @@ const transformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
           const data = Array.from(declaredType).map((property) => {
             const { name, value } = createDataFromProperty(property);
             let initializer:
+              | ts.BooleanLiteral
               | ts.StringLiteral
               | ts.NumericLiteral
               | ts.ArrayLiteralExpression
               | ts.ObjectLiteralExpression
               | ts.NullLiteral = ts.factory.createNull();
-            if (typeof value === "string")
+            if (typeof value === "boolean") {
+              initializer = value
+                ? ts.factory.createTrue()
+                : ts.factory.createFalse();
+            } else if (typeof value === "string")
               initializer = ts.factory.createStringLiteral(value);
             else if (typeof value === "number")
               initializer = ts.factory.createNumericLiteral(value);
@@ -137,12 +146,17 @@ const transformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
               initializer = ts.factory.createObjectLiteralExpression(
                 Object.entries(value).map(([key, value]) => {
                   let initializer:
+                    | ts.BooleanLiteral
                     | ts.StringLiteral
                     | ts.NumericLiteral
                     | ts.ArrayLiteralExpression
                     | ts.ObjectLiteralExpression
                     | ts.NullLiteral = ts.factory.createNull();
-                  if (typeof value === "string")
+                  if (typeof value === "boolean") {
+                    initializer = value
+                      ? ts.factory.createTrue()
+                      : ts.factory.createFalse();
+                  } else if (typeof value === "string")
                     initializer = ts.factory.createStringLiteral(value);
                   else if (typeof value === "number")
                     initializer = ts.factory.createNumericLiteral(value);
