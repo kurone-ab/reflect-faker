@@ -14,5 +14,26 @@
 			"~/*": ["src/*"]
 		}
 	},
-	"exclude": ["node_modules", "dist", "example.ts"]
+	"exclude": ["node_modules", "dist", "example.ts"],
+	"tsc-alias": {
+		"resolveFullPaths": true
+	},
+	"ts-node": {
+		"compilerOptions": {
+			"isolatedModules": true,
+			"esModuleInterop": true,
+			"module": "ES6",
+			"strictNullChecks": true,
+			"moduleResolution": "Node",
+			"noImplicitAny": true,
+			"target": "ESNext",
+			"outDir": "dist",
+			"lib": ["ESNext", "DOM"],
+			"baseUrl": ".",
+			"paths": {
+				"~/*": ["src/*"]
+			}
+		},
+		"exclude": ["node_modules", "dist", "example.ts"]
+	}
 }
