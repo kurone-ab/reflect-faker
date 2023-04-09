@@ -1,0 +1,20 @@
+{
+  "name": "reflect-faker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc ./index.ts --esModuleInterop --outDir ./dist --lib es6,dom --module nodenext --target esnext",
+    "start": "tsc --project tsconfig.json && node dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^5.0.3"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.7"
+  }
+}
